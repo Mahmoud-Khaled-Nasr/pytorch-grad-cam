@@ -62,7 +62,7 @@ class BaseCAM:
     def forward(self,
                 input_tensor: torch.Tensor,
                 targets: List[torch.nn.Module],
-                eigen_smooth: bool = False) -> np.ndarray:
+                eigen_smooth: bool = False) -> tuple[np.ndarray, np.ndarray]:
 
         if self.cuda:
             input_tensor = input_tensor.cuda()
@@ -93,7 +93,7 @@ class BaseCAM:
         cam_per_layer = self.compute_cam_per_layer(input_tensor,
                                                    targets,
                                                    eigen_smooth)
-        return self.aggregate_multi_layers(cam_per_layer)
+        return self.aggregate_multi_layers(cam_per_layer), cam_per_layer
 
     def get_target_width_height(self,
                                 input_tensor: torch.Tensor) -> Tuple[int, int]:
